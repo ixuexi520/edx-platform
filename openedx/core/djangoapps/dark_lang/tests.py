@@ -9,6 +9,7 @@ from django.test import TestCase
 from django.test.client import Client
 from django.utils.translation import LANGUAGE_SESSION_KEY
 from mock import Mock
+from config_models.models import cache
 
 from openedx.core.djangoapps.dark_lang.middleware import DarkLangMiddleware
 from openedx.core.djangoapps.dark_lang.models import DarkLangConfig
@@ -42,6 +43,7 @@ class DarkLangMiddlewareTests(TestCase):
             changed_by=self.user,
             enabled=True
         ).save()
+        self.addCleanup(cache.clear)
 
     def process_middleware_request(self, language_session_key=UNSET, accept=UNSET):
         """
@@ -203,6 +205,7 @@ class DarkLangMiddlewareTests(TestCase):
             changed_by=self.user,
             enabled=True
         ).save()
+
         self.assertAcceptEquals(
             expected,
             self.process_middleware_request(accept=accept_header)

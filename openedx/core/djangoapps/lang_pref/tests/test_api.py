@@ -7,6 +7,7 @@ from django.test.utils import override_settings
 from django.utils import translation
 from django.contrib.auth.models import User
 import ddt
+from config_models.models import cache
 
 from openedx.core.djangoapps.dark_lang.models import DarkLangConfig
 from openedx.core.djangoapps.lang_pref import api as language_api
@@ -81,6 +82,7 @@ class LanguageApiTest(TestCase):
                 changed_by=user,
                 enabled=True
             ).save()
+            self.addCleanup(cache.clear)
             released_languages = language_api.released_languages()
             self.assertEqual(released_languages, expected_languages)
 

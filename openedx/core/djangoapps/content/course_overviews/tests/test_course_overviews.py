@@ -14,6 +14,7 @@ from django.db.utils import IntegrityError
 from django.test.utils import override_settings
 from django.utils import timezone
 from PIL import Image
+from config_models.models import cache
 
 from lms.djangoapps.certificates.api import get_active_web_certificate
 from openedx.core.djangoapps.catalog.tests.mixins import CatalogIntegrationMixin
@@ -301,6 +302,7 @@ class CourseOverviewTestCase(CatalogIntegrationMixin, ModuleStoreTestCase):
     @ddt.unpack
     def test_closest_released_language(self, released_languages, course_language, expected_language):
         DarkLangConfig(released_languages=released_languages, enabled=True, changed_by=self.user).save()
+        self.addCleanup(cache.clear)
         course_overview = CourseOverviewFactory.create(language=course_language)
         self.assertEqual(course_overview.closest_released_language, expected_language)
 

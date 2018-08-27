@@ -11,6 +11,7 @@ from django.urls import reverse, reverse_lazy
 from django.test import TestCase
 from django.test.client import Client
 from django.utils import translation
+from config_models.models import cache
 
 from openedx.core.djangoapps.dark_lang.models import DarkLangConfig
 from openedx.core.djangoapps.lang_pref import LANGUAGE_KEY
@@ -53,6 +54,7 @@ class BaseI18nTestCase(TestCase):
             changed_by=user,
             enabled=True
         ).save()
+        self.addCleanup(cache.clear)
 
     def create_user(self):
         """
