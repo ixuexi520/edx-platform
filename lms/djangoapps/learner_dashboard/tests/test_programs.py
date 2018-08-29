@@ -227,6 +227,7 @@ class TestProgramDetails(ProgramsApiConfigMixin, CatalogIntegrationMixin, Shared
         )
 
     def assert_pathway_data_present(self, response):
+        self.assertContains(response, 'industryPathways')
         self.assertContains(response, 'creditPathways')
         self.assertContains(response, self.pathway_data['name'])
 
