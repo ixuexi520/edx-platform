@@ -39,7 +39,8 @@ def get_cache(name):
 
     Returns: dict
     """
-    return RequestCache(name)
+    assert name is not None
+    return RequestCache(name).data
 
 
 def clear_cache(name):
